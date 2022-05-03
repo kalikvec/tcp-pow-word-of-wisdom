@@ -4,5 +4,5 @@ start-server:
 start-client:
 	go run cmd/client/main.go
 
-start:
+run:
 	docker-compose up --abort-on-container-exit --force-recreate --build
