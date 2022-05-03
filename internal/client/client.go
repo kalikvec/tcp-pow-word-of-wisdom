@@ -22,8 +22,10 @@ func NewClient(cfg *env.Config) *client {
 	return &client{cfg: cfg}
 }
 
-// Run - start the tcp client with specified server address
-func (c *client) Run(ctx context.Context, address string) error {
+// Run - start tcp client
+func (c *client) Run(ctx context.Context) error {
+	address := fmt.Sprintf("%s:%d", c.cfg.ServerHost, c.cfg.ServerPort)
+
 	conn, err := net.Dial("tcp", address)
 	if err != nil {
 		return err

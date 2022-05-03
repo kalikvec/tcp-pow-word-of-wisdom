@@ -22,7 +22,7 @@ type Message struct {
 }
 
 func (m *Message) Marshall() []byte {
-	return []byte(fmt.Sprintf("%d:%s", m.Header, m.Payload))
+	return []byte(fmt.Sprintf("%d%s%s", m.Header, separator, m.Payload))
 }
 
 func NewMessage(b []byte) (*Message, error) {

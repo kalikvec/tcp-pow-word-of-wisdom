@@ -48,7 +48,9 @@ func NewServer(cfg *env.Config, cache Cache) *server {
 }
 
 // Run - main function, launches server to listen on given address and handle new connections
-func (s *server) Run(ctx context.Context, address string) error {
+func (s *server) Run(ctx context.Context) error {
+	address := fmt.Sprintf("%s:%d", s.cfg.ServerHost, s.cfg.ServerPort)
+
 	listener, err := net.Listen("tcp", address)
 	if err != nil {
 		return err
@@ -89,7 +91,6 @@ func (s *server) handleConnection(ctx context.Context, conn net.Conn) {
 		if err != nil {
 			fmt.Println("WriteMessage error:", err)
 		}
-
 	}
 }
 
