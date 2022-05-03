@@ -1,5 +1,5 @@
 # Build stage
-FROM golang:1.18-alpine3.15 AS builder
+FROM golang:1.18 AS builder
 
 WORKDIR /build
 
@@ -15,6 +15,6 @@ FROM scratch
 COPY --from=builder /build/main /
 COPY --from=builder /build/config/config.json /config/config.json
 
-EXPOSE 3333
+EXPOSE 8080
 
 ENTRYPOINT ["/main"]
