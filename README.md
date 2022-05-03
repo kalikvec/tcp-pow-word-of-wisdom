@@ -30,7 +30,8 @@ make start-client
 
 ## 3. Alternatives and algorithm selection.
 
-Hashcash's become the algorithm of choice as it has the following 
+Hashcash's become the algorithm of choice as it has the following
+
 Pros:
 + ease of implementation and detailed description.
 + computational efficiency of validation on server side
