@@ -8,13 +8,22 @@ import (
 	"net"
 	"time"
 
+	"github.com/kalikvec/tcp-pow-word-of-wisdom/internal/env"
 	"github.com/kalikvec/tcp-pow-word-of-wisdom/internal/pow"
 	"github.com/kalikvec/tcp-pow-word-of-wisdom/internal/proto"
 	"github.com/kalikvec/tcp-pow-word-of-wisdom/internal/transport"
 )
 
+type client struct {
+	cfg *env.Config
+}
+
+func NewClient(cfg *env.Config) *client {
+	return &client{cfg: cfg}
+}
+
 // Run - start the tcp client with specified server address
-func Run(ctx context.Context, address string) error {
+func (c *client) Run(ctx context.Context, address string) error {
 	conn, err := net.Dial("tcp", address)
 	if err != nil {
 		return err
@@ -25,7 +34,7 @@ func Run(ctx context.Context, address string) error {
 
 	// client will send new request every 3 seconds endlessly
 	for {
-		message, err := handleConnection(ctx, conn)
+		message, err := c.handleConnection(ctx, conn)
 		if err != nil {
 			return err
 		}
@@ -39,11 +48,11 @@ func Run(ctx context.Context, address string) error {
 // 2. calc hashcash to perform Proof of Work
 // 3. write message with found hashcash proof back to server
 // 4. get result quote from server
-func handleConnection(ctx context.Context, conn io.ReadWriter) (string, error) {
+func (c *client) handleConnection(ctx context.Context, conn io.ReadWriter) (string, error) {
 	gate := transport.NewGate(conn)
 
 	// 1. requesting challenge
-	err := gate.WriteMessage(proto.Message{
+	err := gate.WriteMessage(&proto.Message{
 		Header: proto.RequestChallenge,
 	})
 	if err != nil {
@@ -62,9 +71,7 @@ func handleConnection(ctx context.Context, conn io.ReadWriter) (string, error) {
 	}
 
 	// 2. calc hashcash to perform Proof of Work
-	// TODO move to config
-	maxIterations := 1_000_000
-	h, err = pow.CalcHashCash(h, maxIterations)
+	h, err = pow.CalcHashCash(h, c.cfg.HashcashMaxIterations)
 	if err != nil {
 		return "", fmt.Errorf("calc hashcash error: %w", err)
 	}
@@ -75,7 +82,7 @@ func handleConnection(ctx context.Context, conn io.ReadWriter) (string, error) {
 	}
 
 	// 3. write message with found hashcash proof back to server
-	err = gate.WriteMessage(proto.Message{
+	err = gate.WriteMessage(&proto.Message{
 		Header:  proto.RequestResource,
 		Payload: b,
 	})

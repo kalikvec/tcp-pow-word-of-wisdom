@@ -1,3 +1,4 @@
+# Build stage
 FROM golang:1.18-alpine3.15 AS builder
 
 WORKDIR /build
@@ -8,7 +9,7 @@ RUN go mod download
 
 RUN GO111MODULE=on CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o main ./cmd/client
 
-# multistage build to copy only binary and config
+# Run stage
 FROM scratch
 
 COPY --from=builder /build/main /

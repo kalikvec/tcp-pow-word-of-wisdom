@@ -21,7 +21,7 @@ func NewGate(conn io.ReadWriter) *MessageGate {
 	return &MessageGate{writer: conn, reader: bufio.NewReader(conn)}
 }
 
-func (s *MessageGate) WriteMessage(m proto.Message) error {
+func (s *MessageGate) WriteMessage(m *proto.Message) error {
 	b := bytes.NewBuffer(m.Marshall())
 	b.WriteByte(msgSep)
 

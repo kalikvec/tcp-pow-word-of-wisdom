@@ -33,6 +33,10 @@ func sha1Hash(data string) string {
 	return fmt.Sprintf("%x", bs)
 }
 
+func IsValidHashCash(in HashCash) bool {
+	return isHashCorrect(in.hashHeader(), in.ZerosCount)
+}
+
 func CalcHashCash(in HashCash, maxIterations int) (HashCash, error) {
 	for in.Counter <= maxIterations || maxIterations <= 0 {
 		hash := in.hashHeader()
