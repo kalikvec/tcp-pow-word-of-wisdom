@@ -126,7 +126,7 @@ func (s *server) handleMsg(ctx context.Context, in *proto.Message, clientAddress
 		}
 		return msg, nil
 	case proto.RequestResource:
-		fmt.Printf("client %s requests resource with payload %v\n", clientAddress, in.Payload)
+		fmt.Printf("client %s requests resource with payload %v\n", clientAddress, string(in.Payload))
 		// parse client's solution
 		var h pow.HashCash
 		err := json.Unmarshal(in.Payload, &h)
