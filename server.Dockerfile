@@ -15,6 +15,6 @@ FROM scratch
 COPY --from=builder /build/main /
 COPY --from=builder /build/config/config.json /config/config.json
 
-EXPOSE 8080
+EXPOSE 8061
 
 ENTRYPOINT ["/main"]
