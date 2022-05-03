@@ -23,13 +23,17 @@ func (h HashCash) header() string {
 }
 
 func (h HashCash) hashHeader() string {
-	return sha1Hash(h.header())
+	header := h.header()
+	hash := sha1Hash(header)
+	//fmt.Println(header, hash)
+	return hash
 }
 
 // sha1Hash - calculates sha1 hash from given string
 func sha1Hash(data string) string {
 	h := sha1.New()
-	bs := h.Sum([]byte(data))
+	h.Write([]byte(data))
+	bs := h.Sum(nil)
 	return fmt.Sprintf("%x", bs)
 }
 
@@ -40,7 +44,6 @@ func IsValidHashCash(in HashCash) bool {
 func CalcHashCash(in HashCash, maxIterations int) (HashCash, error) {
 	for in.Counter <= maxIterations || maxIterations <= 0 {
 		hash := in.hashHeader()
-		//fmt.Println(header, hash)
 		if isHashCorrect(hash, in.ZerosCount) {
 			return in, nil
 		}
