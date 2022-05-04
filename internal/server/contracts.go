@@ -1,10 +1,10 @@
 package server
 
 type Cache interface {
-	// Add
+	// Add - add value by key
 	Add(int, int64) error
-	// Get
+	// Get - check whether key exists
 	Get(int) (bool, error)
-	// Delete
+	// Delete - delete value by key
 	Delete(int)
 }

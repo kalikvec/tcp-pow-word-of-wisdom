@@ -28,7 +28,7 @@ make start-server
 make start-client
 ```
 
-## 3. Alternatives and algorithm selection.
+## 3. Alternatives and algorithm choice.
 
 Hashcash's become the algorithm of choice as it has the following
 
@@ -44,6 +44,6 @@ Cons:
 Alternatives:
 
 [Merkle tree](https://en.wikipedia.org/wiki/Merkle_tree)
-+ more difficult to implement comparing with hashcash/
++ more difficult to implement comparing with hashcash.
 + less efficient from the server side - server needs more power to check the challenge.
 
